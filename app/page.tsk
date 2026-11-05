@@ -1,1 +1,156 @@
 
+export default function Home() {
+  return (
+    <main>
+      <nav className="nav">
+        <h2>🎨 DaniToons AI</h2>
+        <div>
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="/login">Sign in</a>
+          <a className="navbtn" href="/signup">Get Started</a>
+        </div>
+      </nav>
+
+      <section className="hero">
+        <div className="tag">✨ THE FUTURE OF KIDS ENTERTAINMENT</div>
+        <h1>
+          Turn Your Ideas Into
+          <span> Magical Cartoons!</span>
+        </h1>
+        <p>
+          Create amazing AI cartoons, animated stories,
+          characters and videos for children. All you
+          need is your imagination.
+        </p>
+        <a className="mainbtn" href="/signup">
+          Start Creating Free →
+        </a>
+        <p className="small">Free to start • Made for creativity</p>
+        <div className="art">🦁 🐻 🦊 🐼 🦄</div>
+      </section>
+
+      <section id="features" className="section">
+        <h2>Everything You Need to Create</h2>
+        <p>Powerful creative tools for amazing children's content.</p>
+        <div className="cards">
+          <article>
+            <div className="emoji">🎬</div>
+            <h3>AI Video Creator</h3>
+            <p>Turn simple text prompts into exciting cartoon video ideas.</p>
+          </article>
+          <article>
+            <div className="emoji">🖼️</div>
+            <h3>Image to Animation</h3>
+            <p>Bring your favorite pictures and characters to life.</p>
+          </article>
+          <article>
+            <div className="emoji">🎙️</div>
+            <h3>AI Children's Voices</h3>
+            <p>Create expressive voiceovers for your cartoon stories.</p>
+          </article>
+          <article>
+            <div className="emoji">📚</div>
+            <h3>Story Creator</h3>
+            <p>Develop fun stories and adventures for young audiences.</p>
+          </article>
+          <article>
+            <div className="emoji">🧸</div>
+            <h3>Character Creator</h3>
+            <p>Imagine and develop your own cartoon characters.</p>
+          </article>
+          <article>
+            <div className="emoji">☁️</div>
+            <h3>Cloud Projects</h3>
+            <p>Keep your creative projects organized in one place.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="how" className="section how">
+        <h2>Creating Cartoons Is Easy</h2>
+        <div className="steps">
+          <p>1. ✍️ Write your story or prompt.</p>
+          <p>2. 🖼️ Upload a picture or choose a character.</p>
+          <p>3. 🎬 Create your cartoon video.</p>
+        </div>
+        <a className="mainbtn" href="/signup">Join DaniToons Free →</a>
+      </section>
+
+      <footer>
+        <h2>🎨 DaniToons AI Studio</h2>
+        <p>Making imagination come alive, one cartoon at a time.</p>
+        <p>© 2026 DaniToons AI Studio. Created by Daniel Dingam.</p>
+      </footer>
+
+      <style jsx global>{`
+        * { box-sizing: border-box; }
+        body {
+          margin: 0;
+          background: #090d20;
+          color: white;
+          font-family: Arial, sans-serif;
+        }
+        a { text-decoration: none; color: inherit; }
+        .nav {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px 7%;
+          background: #10152d;
+          flex-wrap: wrap;
+          gap: 15px;
+        }
+        .nav h2 { color: #a78bfa; }
+        .nav div { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; }
+        .navbtn, .mainbtn {
+          background: #8055ed;
+          padding: 13px 20px;
+          border-radius: 10px;
+          font-weight: bold;
+        }
+        .hero {
+          text-align: center;
+          padding: 100px 20px;
+          background: linear-gradient(135deg,#17133e,#101c3c,#25134a);
+        }
+        .tag { color: #c4b5fd; letter-spacing: 2px; }
+        .hero h1 { font-size: clamp(38px,7vw,68px); max-width: 850px; margin: 25px auto; }
+        .hero h1 span { color: #a78bfa; display: block; }
+        .hero p { color: #cbd5e1; font-size: 18px; line-height: 1.7; max-width: 650px; margin: 20px auto 35px; }
+        .small { font-size: 13px !important; }
+        .art { font-size: 55px; margin-top: 40px; }
+        .section { padding: 75px 7%; text-align: center; }
+        .section h2 { font-size: 34px; }
+        .section > p { color: #b8bfd5; }
+        .cards {
+          display: grid;
+          grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+          gap: 22px;
+          margin-top: 40px;
+        }
+        article {
+          background: #171d38;
+          padding: 28px;
+          border: 1px solid #34345f;
+          border-radius: 18px;
+          text-align: left;
+        }
+        article h3 { color: #c4b5fd; }
+        article p { color: #cbd5e1; line-height: 1.6; }
+        .emoji { font-size: 38px; }
+        .how { background: #111831; }
+        .steps { margin: 35px auto; max-width: 500px; text-align: left; line-height: 2.5; font-size: 18px; }
+        footer { padding: 40px 20px; text-align: center; background: #070a16; color: #aeb8d0; }
+        footer h2 { color: #a78bfa; }
+        @media(max-width:600px) {
+          .nav { justify-content: center; text-align: center; }
+          .nav div { justify-content: center; }
+          .hero { padding: 65px 18px; }
+          .section { padding: 55px 18px; }
+        }
+      `}</style>
+    </main>
+  );
+}
+
