@@ -1,8 +1,11 @@
+
 import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "DaniToons AI Studio",
-  description: "Create amazing AI cartoons and videos for kids.",
+  description:
+    "Create amazing AI cartoons, animated stories and children's videos.",
 };
 
 export default function RootLayout({
@@ -15,4 +18,5 @@ export default function RootLayout({
       <body>{children}</body>
     </html>
   );
-    }
+}
+
