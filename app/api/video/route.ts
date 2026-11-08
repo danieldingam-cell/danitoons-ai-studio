@@ -1,4 +1,6 @@
 
+import { generateVideo } from "../../../lib/runway";
+
 export async function POST(request: Request) {
   try {
     const { prompt, imageUrl } = await request.json();
@@ -12,11 +14,18 @@ export async function POST(request: Request) {
 
     const result = await generateVideo(prompt, imageUrl);
 
-    return Response.json(result);
+    return Response.json({
+      success: true,
+      video: result,
+    });
   } catch (error) {
+    console.error("Video generation error:", error);
+
     return Response.json(
-      { error: "Video generation failed" },
+      { error: "Unable to generate video" },
       { status: 500 }
     );
   }
 }
+
+
