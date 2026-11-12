@@ -1,19 +1,50 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+type Voice = {
+  id: string;
+  name: string;
+};
 
 export default function StudioPage() {
   const [prompt, setPrompt] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState("");
   const [voiceId, setVoiceId] = useState("");
+  const [voices, setVoices] = useState<Voice[]>([]);
   const [speechText, setSpeechText] = useState("");
   const [loading, setLoading] = useState(false);
   const [voiceLoading, setVoiceLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [videoResult, setVideoResult] = useState("");
   const [audioUrl, setAudioUrl] = useState("");
+
+  // Load your 20 configured ElevenLabs voices
+  useEffect(() => {
+    async function loadVoices() {
+      try {
+        const response = await fetch("/api/voice");
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Could not load voices");
+        }
+
+        setVoices(data.voices || []);
+
+        if (data.voices?.length > 0) {
+          setVoiceId(data.voices[0].id);
+        }
+      } catch (error) {
+        console.error("Voice loading error:", error);
+        setMessage("Could not load voices. Check your voice API setup.");
+      }
+    }
+
+    loadVoices();
+  }, []);
 
   async function uploadImage() {
     if (!image) {
@@ -69,7 +100,7 @@ export default function StudioPage() {
         throw new Error(data.error || "Video generation failed");
       }
 
-      setVideoResult(JSON.stringify(data.video, null, 2));
+      setVideoResult(JSON.stringify(data.video || data, null, 2));
       setMessage("Video generation task submitted successfully.");
     } catch (error) {
       setMessage(
@@ -81,8 +112,8 @@ export default function StudioPage() {
   }
 
   async function createVoice() {
-    if (!speechText.trim() || !voiceId.trim()) {
-      setMessage("Enter your story text and ElevenLabs voice ID.");
+    if (!speechText.trim() || !voiceId) {
+      setMessage("Enter your story text and select a voice.");
       return;
     }
 
@@ -127,6 +158,7 @@ export default function StudioPage() {
           <h1 className="text-2xl font-black text-purple-400">
             DaniToons AI Studio
           </h1>
+
           <a
             href="/"
             className="rounded-lg bg-white/10 px-4 py-2"
@@ -147,6 +179,8 @@ export default function StudioPage() {
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">
+
+          {/* VIDEO GENERATION */}
 
           <section className="rounded-2xl border border-white/10 bg-slate-900 p-6">
             <h3 className="text-xl font-bold mb-5">
@@ -202,21 +236,38 @@ export default function StudioPage() {
             </button>
           </section>
 
+          {/* VOICE GENERATION */}
+
           <section className="rounded-2xl border border-white/10 bg-slate-900 p-6">
             <h3 className="text-xl font-bold mb-5">
               02. Children's AI Voices
             </h3>
 
             <label className="block mb-3 font-semibold">
-              ElevenLabs Voice ID
+              Choose a Character Voice
             </label>
 
-            <input
+            <select
               value={voiceId}
               onChange={(e) => setVoiceId(e.target.value)}
-              placeholder="Enter your ElevenLabs voice ID"
-              className="w-full rounded-lg bg-slate-800 p-4 mb-5 outline-none focus:ring-2 focus:ring-purple-500"
-            />
+              className="w-full rounded-lg bg-slate-800 p-4 mb-3 text-white outline-none focus:ring-2 focus:ring-purple-500"
+            >
+              {voices.length === 0 && (
+                <option value="">
+                  No voices loaded
+                </option>
+              )}
+
+              {voices.map((voice, index) => (
+                <option key={voice.id} value={voice.id}>
+                  {voice.name || `Character Voice ${index + 1}`}
+                </option>
+              ))}
+            </select>
+
+            <p className="text-sm text-slate-400 mb-5">
+              Available voices: {voices.length}/20
+            </p>
 
             <label className="block mb-3 font-semibold">
               Story or dialogue
@@ -232,7 +283,7 @@ export default function StudioPage() {
 
             <button
               onClick={createVoice}
-              disabled={voiceLoading}
+              disabled={voiceLoading || !voiceId}
               className="mt-5 w-full rounded-xl bg-pink-600 p-4 font-bold hover:bg-pink-500 disabled:opacity-50"
             >
               {voiceLoading ? "Generating Voice..." : "Generate AI Voice"}
@@ -240,7 +291,9 @@ export default function StudioPage() {
 
             {audioUrl && (
               <div className="mt-5">
-                <p className="mb-3 font-semibold">Your generated voice</p>
+                <p className="mb-3 font-semibold">
+                  Your generated voice
+                </p>
                 <audio controls src={audioUrl} className="w-full" />
               </div>
             )}
@@ -258,21 +311,24 @@ export default function StudioPage() {
             <h3 className="text-xl font-bold mb-4">
               Video Generation Response
             </h3>
+
             <pre className="overflow-x-auto whitespace-pre-wrap text-sm text-green-300">
               {videoResult}
             </pre>
+
             <p className="mt-4 text-sm text-slate-400">
               This is the Runway task response. Video completion and playback
-              will be connected through a status-checking endpoint.
+              still require a status-checking endpoint.
             </p>
           </section>
         )}
 
         <footer className="mt-16 border-t border-white/10 py-8 text-center text-sm text-slate-500">
-          DaniToons AI Studio · Created by Daniel Dingam
+          DaniToons AI Studio · Created by Daniel Tuwi Dingam
+       ©2026
         </footer>
       </div>
     </main>
   );
     }
-    
+  
